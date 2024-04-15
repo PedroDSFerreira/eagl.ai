@@ -1,13 +1,13 @@
-package com.pdsf.eagleai;
+package dev.pdsf.eagleai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EagleaiApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EagleaiApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

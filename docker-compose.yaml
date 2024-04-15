@@ -1,0 +1,29 @@
+services:
+  eagleai:
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_USER}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    image: postgres:16.2
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - 5432:5432
+
+  ollama:
+    image: ollama/ollama:0.1.32
+    volumes:
+      - ./data/ollama:/root/.ollama
+    ports:
+      - 11434:11434

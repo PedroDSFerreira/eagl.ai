@@ -1,10 +1,10 @@
-package com.pdsf.eagleai;
+package dev.pdsf.eagleai;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EagleaiApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
