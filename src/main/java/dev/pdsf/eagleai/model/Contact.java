@@ -1,28 +1,55 @@
 package dev.pdsf.eagleai.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
+@Table(name = "contacts")
 public class Contact {
+    @JsonView(Views.Minimal.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
+
+    @JsonView(Views.Minimal.class)
+    @NotBlank(message = "Name is mandatory")
     private String name;
-    private String email;
+
+    @JsonView(Views.Minimal.class)
+    @NotBlank(message = "Phone number is mandatory")
     private String phone;
+
+    @JsonView(Views.Minimal.class)
+    @Email
+    private String email;
+
+    @JsonView(Views.General.class)
     private String address;
+
+    @JsonView(Views.General.class)
+    private byte[] imageData;
+
+    @JsonView(Views.General.class)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "description_id", referencedColumnName = "id")
+    private Description description;
 
     protected Contact() {
     }
 
-    public Contact(String name, String email, String phone, String address) {
+    public Contact(String name, String email, String phone, String address, byte[] imageData) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
+        this.imageData = imageData;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -57,17 +84,30 @@ public class Contact {
         this.address = address;
     }
 
-    public Long getId() {
-        return id;
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "Contact{" +
                 "name='" + name + '\'' +
-                ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
+                ", description=" + description +
                 '}';
     }
 }
