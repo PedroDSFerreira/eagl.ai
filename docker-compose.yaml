@@ -11,6 +11,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=${SPRING_USER}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - EAGLEAI_PORT=${EAGLEAI_PORT}
+    ports:
+      - ${EAGLEAI_PORT}:${EAGLEAI_PORT}
 
   db:
     image: postgres:16.2
