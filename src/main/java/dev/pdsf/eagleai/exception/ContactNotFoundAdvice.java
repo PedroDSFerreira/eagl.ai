@@ -12,7 +12,7 @@ public class ContactNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(ContactNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String contactNotFoundHandler(ContactNotFoundException exception) {
-        return exception.getMessage();
+    String contactNotFoundHandler(ContactNotFoundException ex) {
+        return "{\"error\": \"" + ex.getMessage() + "\"}";
     }
 }
