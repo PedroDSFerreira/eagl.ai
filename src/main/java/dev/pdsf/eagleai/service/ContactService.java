@@ -12,10 +12,12 @@ import java.util.List;
 public class ContactService {
     private final ContactRepository repository;
     private final DescriptionService descriptionService;
+    private final OllamaService ollamaService;
 
-    public ContactService(ContactRepository repository, DescriptionService descriptionService) {
+    public ContactService(ContactRepository repository, DescriptionService descriptionService, OllamaService ollamaService) {
         this.repository = repository;
         this.descriptionService = descriptionService;
+        this.ollamaService = ollamaService;
     }
 
     public List<Contact> listContacts() {
@@ -29,10 +31,11 @@ public class ContactService {
 
     public Contact newContact(Contact newContact) {
         if (newContact.getImageData() != null) {
-            // Call ollama, get reply
+            String response = ollamaService.getResponse(newContact.getImageData());
+            System.out.println("Ollama: " + response);
             // Parse reply, get description params
+            Description description = ollamaService.parseResponse(response);
             // Create new description w/params, and add to contact
-            Description description = new Description(null, null,null, null, null, false);
             descriptionService.newDescription(description);
             newContact.setDescription(description);
         }
