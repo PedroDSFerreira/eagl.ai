@@ -2,6 +2,7 @@ services:
   eagleai:
     build:
       context: .
+    container_name: eagleai
     depends_on:
       - db
     environment:
@@ -12,11 +13,14 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - EAGLEAI_PORT=${EAGLEAI_PORT}
+      - OLLAMA_URL=${OLLAMA_URL}
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
     ports:
       - ${EAGLEAI_PORT}:${EAGLEAI_PORT}
 
   db:
     image: postgres:16.2
+    container_name: db
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
@@ -26,6 +30,7 @@ services:
 
   ollama:
     image: ollama/ollama:0.1.32
+    container_name: ollama
     volumes:
       - ./data/ollama:/root/.ollama
     ports:
