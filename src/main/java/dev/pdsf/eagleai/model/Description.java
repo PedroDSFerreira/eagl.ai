@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dev.pdsf.eagleai.model.types.*;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "descriptions")
 public class Description {
@@ -13,6 +15,8 @@ public class Description {
     @Column(name = "id")
     private Long id;
 
+    @JsonView(Views.Minimal.class)
+    private Age age;
     @JsonView(Views.Minimal.class)
     private Sex sex;
 
@@ -37,7 +41,8 @@ public class Description {
     protected Description() {
     }
 
-    public Description(Sex sex, SkinTone skinTone, EyeColor eyeColor, HairType hairType, HairColor hairColor, boolean facialHair) {
+    public Description(Age age, Sex sex, SkinTone skinTone, EyeColor eyeColor, HairType hairType, HairColor hairColor, boolean facialHair) {
+        this.age = age;
         this.sex = sex;
         this.skinTone = skinTone;
         this.eyeColor = eyeColor;
@@ -48,6 +53,14 @@ public class Description {
 
     public Long getId() {
         return id;
+    }
+
+    public Age getAge() {
+        return age;
+    }
+
+    public void setAge(Age age) {
+        this.age = age;
     }
 
     public Sex getSex() {
@@ -99,14 +112,28 @@ public class Description {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Description that = (Description) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
     public String toString() {
         return "Description{" +
-                "facialHair=" + facialHair +
-                ", hairColor=" + hairColor +
-                ", hairType=" + hairType +
-                ", eyeColor=" + eyeColor +
-                ", skinTone=" + skinTone +
+                "age=" + age +
                 ", sex=" + sex +
+                ", skinTone=" + skinTone +
+                ", eyeColor=" + eyeColor +
+                ", hairType=" + hairType +
+                ", hairColor=" + hairColor +
+                ", facialHair=" + facialHair +
                 '}';
     }
 }

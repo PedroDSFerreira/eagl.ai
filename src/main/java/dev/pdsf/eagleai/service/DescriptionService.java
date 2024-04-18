@@ -12,12 +12,12 @@ public class DescriptionService {
     public DescriptionService(DescriptionRepository repository) {
         this.repository = repository;
     }
-    
+
     public Description getDescription(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new DescriptionNotFoundException(id));
     }
-    
+
     public Description newDescription(Description newDescription) {
         return repository.save(newDescription);
     }
@@ -40,6 +40,6 @@ public class DescriptionService {
     public void deleteDescription(Long id) {
         repository.deleteById(id);
     }
-    
-    
+
+
 }
