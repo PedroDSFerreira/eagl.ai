@@ -20,19 +20,20 @@ import java.util.List;
 @Service
 public class OllamaService {
     private final String promptMesage = """
-             Describe the person (not real) in the image, according to the following parameters:
-             - age: CHILD/ADOLESCENT/YOUNG_ADULT/ADULT/ELDER
-              - sex: MAN/FEMALE
-              - skinTone: DARK/MEDIUM/LIGHT
-              - eyeColor: BROWN/GREEN/BLUE
-              - hairType: LONG/SHORT/MEDIUM/NONE
-              - hairColor: BLACK/BROWN/GRAY/WHITE/BLONDE/GINGER/PAINTED/NONE
-              - facialHair: TRUE/FALSE
+            Describe the person (not real) in the image, according to the following parameters:
 
-             The response should have all the fields mentioned, and only the corresponding types.
-             Guess if are uncertain of the parameter type.
-             If more than one person is detected in the image, throw an error.
-             If something goes wrong, ONLY return 'error: ' plus the error message
+            age: CHILD/ADOLESCENT/YOUNG_ADULT/ADULT/ELDER
+            sex: MAN/FEMALE
+            skinTone: DARK/MEDIUM/LIGHT
+            eyeColor: BROWN/GREEN/BLUE
+            hairType: LONG/SHORT/MEDIUM/NONE
+            hairColor: BLACK/BROWN/GRAY/WHITE/BLONDE/GINGER/PAINTED/NONE
+            facialHair: TRUE/FALSE
+
+            The response should have all the fields with format "key: value", and only the corresponding values available.
+            Guess if are uncertain of the parameter type.
+            If more than one person is detected in the image, throw an error.
+            If something goes wrong, ONLY return 'error: ' plus the error message
             """;
 
     @Autowired
