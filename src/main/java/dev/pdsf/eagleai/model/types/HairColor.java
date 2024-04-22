@@ -7,5 +7,6 @@ public enum HairColor {
     WHITE,
     BLONDE,
     GINGER,
-    PAINTED
+    PAINTED,
+    NONE
 }
