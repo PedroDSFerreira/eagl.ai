@@ -1,8 +1,8 @@
 services:
-  eagleai:
+  eaglai:
     build:
       context: .
-    container_name: eagleai
+    container_name: eaglai
     depends_on:
       - db
     environment:
@@ -12,11 +12,11 @@ services:
       - SPRING_DATASOURCE_USERNAME=${SPRING_USER}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - EAGLEAI_PORT=${EAGLEAI_PORT}
+      - EAGLAI_PORT=${EAGLAI_PORT}
       - OLLAMA_URL=${OLLAMA_URL}
       - OLLAMA_MODEL=${OLLAMA_MODEL}
     ports:
-      - ${EAGLEAI_PORT}:${EAGLEAI_PORT}
+      - ${EAGLAI_PORT}:${EAGLAI_PORT}
 
   db:
     image: postgres:16.2

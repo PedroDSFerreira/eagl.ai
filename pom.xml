@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.pdsf</groupId>
-	<artifactId>eagleai</artifactId>
+	<artifactId>eaglai</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>eagleai</name>
+	<name>eaglai</name>
 	<description>An AI-powered virtual address book</description>
 	<properties>
 		<java.version>21</java.version>
