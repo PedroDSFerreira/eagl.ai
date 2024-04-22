@@ -1,4 +1,4 @@
-package dev.pdsf.eagleai.model;
+package dev.pdsf.eagleai.resource;
 
 public class Views {
     public static class Minimal {

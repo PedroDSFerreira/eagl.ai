@@ -2,6 +2,7 @@ package dev.pdsf.eagleai.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.pdsf.eagleai.model.types.*;
+import dev.pdsf.eagleai.resource.Views;
 import jakarta.persistence.*;
 
 import java.util.Objects;
