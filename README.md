@@ -28,5 +28,19 @@ make build
 make up
 ```
 
+4. Install Ollama model
+
+```
+docker exec -it ollama ollama run <ollama-model>
+```
+
+Currently, the available models are:
+- `llava:7b`
+- `llava:13b`
+- `llava:34b` (default)
+
+
+If changed, update `.env` with model used.
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
