@@ -30,10 +30,10 @@ public class OllamaService {
             hairColor: BLACK/BROWN/GRAY/WHITE/BLONDE/GINGER/PAINTED/NONE
             facialHair: TRUE/FALSE
 
-            The response should have all the fields with format "key: value", and only the corresponding values available.
-            Guess if are uncertain of the parameter type.
-            If more than one person is detected in the image, throw an error.
-            If something goes wrong, ONLY return 'error: ' plus the error message
+            The response should have all the fields with format "key: value" per line, and only the corresponding values available.
+            Guess if are uncertain.
+            If multiple people are detected in the image, throw error.
+            If something goes wrong, only return 'error: ' plus error message.
             """;
 
     @Autowired
@@ -43,11 +43,11 @@ public class OllamaService {
         this.ollamaClient = ollamaClient;
     }
 
-    public String getResponse(byte[] imageData) {
+    public String getResponse(String imageData) {
         UserMessage userMessage = new UserMessage(promptMesage,
-                List.of(new Media(MimeTypeUtils.IMAGE_JPEG, imageData)));
-        System.out.println("Calling Ollama...");
-        ChatResponse response = ollamaClient.call(new Prompt(userMessage));
+                List.of(new Media(MimeTypeUtils.APPLICATION_OCTET_STREAM, imageData)));
+        Prompt prompt = new Prompt(List.of(userMessage));
+        ChatResponse response = ollamaClient.call(prompt);
         return response.getResult().getOutput().getContent();
     }
 
@@ -66,6 +66,7 @@ public class OllamaService {
                     params.put(key, value);
                 }
             }
+
             if (params.containsKey("error")) {
                 throw new OllamaParseResponseException(params.get("error"));
             }
