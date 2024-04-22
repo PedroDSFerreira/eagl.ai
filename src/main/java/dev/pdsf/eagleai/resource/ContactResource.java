@@ -2,9 +2,10 @@ package dev.pdsf.eagleai.resource;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import dev.pdsf.eagleai.model.Contact;
-import dev.pdsf.eagleai.model.Views;
 import dev.pdsf.eagleai.service.ContactService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,17 +32,19 @@ public class ContactResource {
     }
 
     @JsonView(Views.General.class)
-    @PostMapping("/contacts")
-    Contact add(@Valid @RequestBody Contact newContact) {
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/contacts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    Contact add(@Valid @ModelAttribute Contact newContact) {
         return contactService.newContact(newContact);
     }
 
     @JsonView(Views.General.class)
-    @PutMapping("/contacts/{id}")
-    Contact update(@Valid @RequestBody Contact newContact, @PathVariable Long id) {
+    @PutMapping(value = "/contacts/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    Contact update(@Valid @ModelAttribute Contact newContact, @PathVariable Long id) {
         return contactService.updateContact(newContact, id);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/contacts/{id}")
     void delete(@PathVariable Long id) {
         contactService.deleteContact(id);

@@ -1,10 +1,15 @@
 package dev.pdsf.eagleai.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import dev.pdsf.eagleai.resource.Views;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @Entity
@@ -31,6 +36,8 @@ public class Contact {
     @JsonView(Views.General.class)
     private String address;
 
+    @Lob
+    @JdbcTypeCode(SqlTypes.VARBINARY)
     @JsonView(Views.General.class)
     private byte[] imageData;
 
@@ -42,12 +49,12 @@ public class Contact {
     protected Contact() {
     }
 
-    public Contact(String name, String email, String phone, String address, byte[] imageData) {
+    public Contact(String name, String email, String phone, String address) {
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.imageData = imageData;
+
     }
 
     public Long getId() {
@@ -92,6 +99,10 @@ public class Contact {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public void setImage(MultipartFile image) throws IOException {
+        this.imageData = image.getBytes();
     }
 
     public Description getDescription() {

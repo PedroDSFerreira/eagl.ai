@@ -6,6 +6,7 @@ import dev.pdsf.eagleai.model.Description;
 import dev.pdsf.eagleai.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -30,14 +31,10 @@ public class ContactService {
     }
 
     public Contact newContact(Contact newContact) {
-        if (newContact.getImageData() != null) {
-            String response = ollamaService.getResponse(newContact.getImageData());
-            System.out.println("Ollama: " + response);
-            // Parse reply, get description params
-            Description description = ollamaService.parseResponse(response);
-            // Create new description w/params, and add to contact
-            descriptionService.newDescription(description);
-            newContact.setDescription(description);
+        byte[] imageData = newContact.getImageData();
+        if (imageData != null) {
+            Description description = parseImage(newContact.getImageData());
+            addContactDescription(newContact, description);
         }
         return repository.save(newContact);
     }
@@ -52,10 +49,29 @@ public class ContactService {
                     return c;
                 })
                 .orElseThrow(() -> new ContactNotFoundException(id));
+
+        byte[] imageData = newContact.getImageData();
+        if (imageData != null) {
+            contact.setImageData(imageData);
+            Description description = parseImage(imageData);
+            addContactDescription(contact, description);
+        }
+
         return repository.save(contact);
     }
 
     public void deleteContact(Long id) {
         repository.deleteById(id);
+    }
+
+    private Description parseImage(byte[] imageData) {
+        String encodedImg = Base64.getEncoder().encodeToString(imageData);
+        String response = ollamaService.getResponse(encodedImg);
+        return ollamaService.parseResponse(response);
+    }
+
+    private void addContactDescription(Contact contact, Description description) {
+        descriptionService.newDescription(description);
+        contact.setDescription(description);
     }
 }
