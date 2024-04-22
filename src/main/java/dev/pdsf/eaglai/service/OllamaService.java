@@ -1,8 +1,8 @@
-package dev.pdsf.eagleai.service;
+package dev.pdsf.eaglai.service;
 
-import dev.pdsf.eagleai.exception.OllamaParseResponseException;
-import dev.pdsf.eagleai.model.Description;
-import dev.pdsf.eagleai.model.types.*;
+import dev.pdsf.eaglai.exception.OllamaParseResponseException;
+import dev.pdsf.eaglai.model.Description;
+import dev.pdsf.eaglai.model.types.*;
 import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.Media;
 import org.springframework.ai.chat.messages.UserMessage;

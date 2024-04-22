@@ -1,4 +1,4 @@
-package dev.pdsf.eagleai.model.types;
+package dev.pdsf.eaglai.model.types;
 
 public enum SkinTone {
     DARK,

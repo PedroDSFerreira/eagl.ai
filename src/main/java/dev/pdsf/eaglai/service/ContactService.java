@@ -1,9 +1,9 @@
-package dev.pdsf.eagleai.service;
+package dev.pdsf.eaglai.service;
 
-import dev.pdsf.eagleai.exception.ContactNotFoundException;
-import dev.pdsf.eagleai.model.Contact;
-import dev.pdsf.eagleai.model.Description;
-import dev.pdsf.eagleai.repository.ContactRepository;
+import dev.pdsf.eaglai.exception.ContactNotFoundException;
+import dev.pdsf.eaglai.model.Contact;
+import dev.pdsf.eaglai.model.Description;
+import dev.pdsf.eaglai.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;

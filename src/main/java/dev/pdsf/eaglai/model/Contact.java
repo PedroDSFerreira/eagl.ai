@@ -1,7 +1,7 @@
-package dev.pdsf.eagleai.model;
+package dev.pdsf.eaglai.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import dev.pdsf.eagleai.resource.Views;
+import dev.pdsf.eaglai.resource.Views;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

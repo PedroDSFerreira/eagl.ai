@@ -1,8 +1,8 @@
-package dev.pdsf.eagleai.service;
+package dev.pdsf.eaglai.service;
 
-import dev.pdsf.eagleai.exception.DescriptionNotFoundException;
-import dev.pdsf.eagleai.model.Description;
-import dev.pdsf.eagleai.repository.DescriptionRepository;
+import dev.pdsf.eaglai.exception.DescriptionNotFoundException;
+import dev.pdsf.eaglai.model.Description;
+import dev.pdsf.eaglai.repository.DescriptionRepository;
 import org.springframework.stereotype.Service;
 
 @Service

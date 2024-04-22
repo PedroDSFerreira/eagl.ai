@@ -1,8 +1,8 @@
-package dev.pdsf.eagleai.resource;
+package dev.pdsf.eaglai.resource;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import dev.pdsf.eagleai.model.Contact;
-import dev.pdsf.eagleai.service.ContactService;
+import dev.pdsf.eaglai.model.Contact;
+import dev.pdsf.eaglai.service.ContactService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

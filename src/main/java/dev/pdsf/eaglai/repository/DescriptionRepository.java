@@ -1,6 +1,6 @@
-package dev.pdsf.eagleai.repository;
+package dev.pdsf.eaglai.repository;
 
-import dev.pdsf.eagleai.model.Description;
+import dev.pdsf.eaglai.model.Description;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package dev.pdsf.eagleai.repository;
+package dev.pdsf.eaglai.repository;
 
-import dev.pdsf.eagleai.model.Contact;
+import dev.pdsf.eaglai.model.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
