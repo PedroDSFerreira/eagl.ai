@@ -24,6 +24,9 @@ stop:
 build:
 	mvn package && $(call docker_compose_cmd) build
 
+build-gpu:
+	mvn package && $(call docker_compose_cmd) build -f docker-compose-gpu.yaml
+
 build-no-cache:
 	mvn package && $(call docker_compose_cmd) build --no-cache
 

@@ -10,25 +10,35 @@
 
 ## Getting Started
 
-1. Create a local `.env` file
+#### 1. Create a local `.env` file
 
 ```
 make prepare-env
 ```
 
-2. Build maven project and container images
+#### 2. Build maven project and container images
+
+##### With GPU support (for NVIDIA only):
+
+- Install the NVIDIA [Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
+
+```
+make build-gpu
+```
+
+##### Without GPU support:
 
 ```
 make build
 ```
 
-3. Run containers
+#### 3. Run containers
 
 ```
 make up
 ```
 
-4. Install Ollama model
+#### 4. Install Ollama model
 
 ```
 docker exec -it ollama ollama run <ollama-model>

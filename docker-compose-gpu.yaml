@@ -1,0 +1,44 @@
+services:
+  eaglai:
+    build:
+      context: .
+    container_name: eaglai
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_USER}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - EAGLAI_PORT=${EAGLAI_PORT}
+      - OLLAMA_URL=${OLLAMA_URL}
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
+    ports:
+      - ${EAGLAI_PORT}:${EAGLAI_PORT}
+
+  db:
+    image: postgres:16.2
+    container_name: db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - 5432:5432
+
+  ollama:
+    image: ollama/ollama:0.1.32
+    container_name: ollama
+    volumes:
+      - ./data/ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
