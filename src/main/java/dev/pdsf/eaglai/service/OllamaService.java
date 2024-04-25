@@ -4,6 +4,8 @@ import dev.pdsf.eaglai.exception.OllamaParseResponseException;
 import dev.pdsf.eaglai.model.Description;
 import dev.pdsf.eaglai.model.types.*;
 import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Media;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -16,6 +18,7 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OllamaService {
@@ -48,7 +51,11 @@ public class OllamaService {
                 List.of(new Media(MimeTypeUtils.APPLICATION_OCTET_STREAM, imageData)));
         Prompt prompt = new Prompt(List.of(userMessage));
         ChatResponse response = ollamaClient.call(prompt);
-        return response.getResult().getOutput().getContent();
+        return Optional.ofNullable(response)
+                .map(ChatResponse::getResult)
+                .map(Generation::getOutput)
+                .map(AssistantMessage::getContent)
+                .orElse("");
     }
 
     public Description parseResponse(String response) {
