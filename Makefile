@@ -22,13 +22,13 @@ stop:
 	$(call docker_compose_cmd) stop
 
 build:
-	mvn package && $(call docker_compose_cmd) build
+	$(call docker_compose_cmd) build
 
 build-gpu:
-	mvn package && $(call docker_compose_cmd) -f docker-compose-gpu.yaml build
+	$(call docker_compose_cmd) -f docker-compose-gpu.yaml build
 
 build-no-cache:
-	mvn package && $(call docker_compose_cmd) build --no-cache
+	$(call docker_compose_cmd) build --no-cache
 
 logs:
 	$(call docker_compose_cmd) logs -f

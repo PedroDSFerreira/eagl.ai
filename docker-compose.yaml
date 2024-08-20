@@ -1,7 +1,7 @@
 services:
   eaglai:
     build:
-      context: .
+      context: ./backend
     container_name: eaglai
     depends_on:
       - db
