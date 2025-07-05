@@ -6,7 +6,6 @@ import dev.pdsf.eaglai.model.Description;
 import dev.pdsf.eaglai.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -33,7 +32,7 @@ public class ContactService {
     public Contact newContact(Contact newContact) {
         byte[] imageData = newContact.getImageData();
         if (imageData != null) {
-            Description description = parseImage(newContact.getImageData());
+            Description description = parseImage(imageData);
             addContactDescription(newContact, description);
         }
         return repository.save(newContact);
@@ -65,8 +64,7 @@ public class ContactService {
     }
 
     private Description parseImage(byte[] imageData) {
-        String encodedImg = Base64.getEncoder().encodeToString(imageData);
-        String response = ollamaService.getResponse(encodedImg);
+        String response = ollamaService.getResponse(imageData);
         return ollamaService.parseResponse(response);
     }
 

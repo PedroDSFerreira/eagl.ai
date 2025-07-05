@@ -3,13 +3,13 @@ package dev.pdsf.eaglai.service;
 import dev.pdsf.eaglai.exception.OllamaParseResponseException;
 import dev.pdsf.eaglai.model.Description;
 import dev.pdsf.eaglai.model.types.*;
-import org.springframework.ai.chat.ChatResponse;
-import org.springframework.ai.chat.Generation;
-import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.messages.Media;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.ollama.OllamaChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.content.Media;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
@@ -19,6 +19,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.core.io.ByteArrayResource;
 
 @Service
 public class OllamaService {
@@ -26,7 +27,7 @@ public class OllamaService {
             Describe the person (not real) in the image, according to the following parameters:
 
             age: CHILD/ADOLESCENT/YOUNG_ADULT/ADULT/ELDER
-            sex: MAN/FEMALE
+            sex: MALE/FEMALE
             skinTone: DARK/MEDIUM/LIGHT
             eyeColor: BROWN/GREEN/BLUE
             hairType: LONG/SHORT/MEDIUM/NONE
@@ -40,22 +41,23 @@ public class OllamaService {
             """;
 
     @Autowired
-    private final OllamaChatClient ollamaClient;
+    private final OllamaChatModel ollamaClient;
 
-    public OllamaService(OllamaChatClient ollamaClient) {
+    public OllamaService(OllamaChatModel ollamaClient) {
         this.ollamaClient = ollamaClient;
     }
 
-    public String getResponse(String imageData) {
-        UserMessage userMessage = new UserMessage(promptMesage,
-                List.of(new Media(MimeTypeUtils.APPLICATION_OCTET_STREAM, imageData)));
-        Prompt prompt = new Prompt(List.of(userMessage));
-        ChatResponse response = ollamaClient.call(prompt);
-        return Optional.ofNullable(response)
-                .map(ChatResponse::getResult)
-                .map(Generation::getOutput)
-                .map(AssistantMessage::getContent)
-                .orElse("");
+    public String getResponse(byte[] imageData) {
+        UserMessage userMessage = UserMessage.builder()
+            .text(promptMesage)
+            .media(List.of(new Media(MimeTypeUtils.IMAGE_PNG, new ByteArrayResource(imageData))))
+            .build();
+
+        ChatResponse response = ollamaClient.call(
+            new Prompt(List.of(userMessage))
+        );
+
+        return response.getResult().getOutput().getText();
     }
 
     public Description parseResponse(String response) {
@@ -78,14 +80,22 @@ public class OllamaService {
                 throw new OllamaParseResponseException(params.get("error"));
             }
 
+            Age age = Age.valueOf(params.get("age"));
+            Sex sex = Sex.valueOf(params.get("sex"));
+            SkinTone skinTone = SkinTone.valueOf(params.get("skinTone"));
+            EyeColor eyeColor = EyeColor.valueOf(params.get("eyeColor"));
+            HairType hairType = HairType.valueOf(params.get("hairType"));
+            HairColor hairColor = HairColor.valueOf(params.get("hairColor"));
+            boolean facialHair = Boolean.parseBoolean(params.get("facialHair"));
+
             description = new Description(
-                    Age.valueOf(params.get("age")),
-                    Sex.valueOf(params.get("sex")),
-                    SkinTone.valueOf(params.get("skinTone")),
-                    EyeColor.valueOf(params.get("eyeColor")),
-                    HairType.valueOf(params.get("hairType")),
-                    HairColor.valueOf(params.get("hairColor")),
-                    Boolean.parseBoolean(params.get("facialHair")));
+                    age,
+                    sex,
+                    skinTone,
+                    eyeColor,
+                    hairType,
+                    hairColor,
+                    facialHair);
 
         } catch (Exception e) {
             throw new OllamaParseResponseException(response);
