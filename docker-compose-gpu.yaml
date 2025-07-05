@@ -15,8 +15,20 @@ services:
       - EAGLAI_PORT=${EAGLAI_PORT}
       - OLLAMA_URL=${OLLAMA_URL}
       - OLLAMA_MODEL=${OLLAMA_MODEL}
+      - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
     ports:
       - ${EAGLAI_PORT}:${EAGLAI_PORT}
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: eaglai-frontend
+    depends_on:
+      - eaglai
+    environment:
+      - VUE_APP_API_URL=http://localhost:${EAGLAI_PORT}/api/v1
+    ports:
+      - 3000:80
 
   db:
     image: postgres:16.2
@@ -29,12 +41,17 @@ services:
       - 5432:5432
 
   ollama:
-    image: ollama/ollama:0.1.32
+    image: ollama/ollama:0.9.5
     container_name: ollama
     volumes:
       - ./data/ollama:/root/.ollama
+      - ./ollama/entrypoint.sh:/entrypoint.sh
     ports:
       - 11434:11434
+    environment:
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
+    tty: true
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
     deploy:
       resources:
         reservations:
