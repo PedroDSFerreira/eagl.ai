@@ -1,5 +1,5 @@
 #!/bin/sh
 set -e
-# Replace placeholder with env var
-sed -i "s|__VITE_API_URL__|${VITE_API_URL}|g" /usr/share/nginx/html/env.js
+# Replace only the value, not the variable name
+sed -i "s|window.__VITE_API_URL__ = \".*\";|window.__VITE_API_URL__ = \"${VITE_API_URL}\";|" /usr/share/nginx/html/env.js
 exec "$@"
