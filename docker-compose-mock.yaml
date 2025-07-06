@@ -64,7 +64,7 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - ./mocks/clean-db.sh:/clean-db.sh:ro
-    entrypoint: ["/bin/sh", "-c", "apk add --no-cache postgresql-client busybox-suid && while [ ! -f /clean-db.sh ]; do sleep 1; done && echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n*/1 * * * * /clean-db.sh' > /etc/crontabs/root && crond -f -d 8"]
+    entrypoint: ["/bin/sh", "-c", "apk add --no-cache postgresql-client busybox-suid && while [ ! -f /clean-db.sh ]; do sleep 1; done && echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n0 * * * * /clean-db.sh' > /etc/crontabs/root && crond -f -d 8"]
 
 volumes:
   ollama_models:
