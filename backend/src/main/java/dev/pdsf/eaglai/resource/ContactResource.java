@@ -34,7 +34,7 @@ public class ContactResource {
                     ByteArrayInputStream in = new ByteArrayInputStream(contact.getImageData());
                     ByteArrayOutputStream out = new ByteArrayOutputStream();
                     Thumbnails.of(in)
-                        .size(64, 64)
+                        .size(640, 640)
                         .outputFormat("jpeg")
                         .toOutputStream(out);
                     thumbnail = Base64.getEncoder().encodeToString(out.toByteArray());
