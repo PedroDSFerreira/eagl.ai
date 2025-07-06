@@ -48,9 +48,10 @@ Make sure to pick a model size that your GPU/CPU and memory can comfortably supp
 
 ## Demo
 
-You can try the project online at: [https://eagle-ai.griffin-frog.ts.net/](https://eagle-ai.griffin-frog.ts.net/)
+You can try the project online at: [https://eagle-ai.griffin-frog.ts.net/](https://eagle-ai.griffin-frog.ts.net/).
 
 - **Database refresh:** The database is automatically refreshed every hour. All data will be reset at that time.
+- **Mock Ollama responses:** This demo uses the [mock configuration](docker-compose-mock.yaml), so the Ollama API responses are static and not representative of any actual parsed facial features.
 
 > ⚠️ **Warning:**
 > Do **not** enter any personal or sensitive information. All data is temporary and publicly accessible.
