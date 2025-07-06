@@ -1,19 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" class="min-h-screen bg-background">
     <NavBar />
-    <main class="min-h-screen pt-16">
+    <main>
       <router-view />
     </main>
   </div>
 </template>
 
-<script>
-import NavBar from './components/NavBar.vue'
-
-export default {
-  name: 'App',
-  components: {
-    NavBar
-  }
-}
+<script setup lang="ts">
+import NavBar from '@/components/NavBar.vue'
 </script>
