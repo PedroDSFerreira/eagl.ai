@@ -5,8 +5,6 @@
 >Search and identify contacts by physical traits, gathered from pictures with AI.
 
 ## Requirements
-- Maven
-- Java 21
 - Docker/Docker Compose
 - `make` command
 
@@ -40,19 +38,13 @@ make build
 make up
 ```
 
-#### 4. Install Ollama model
+## Ollama models
 
-```
-docker exec -it ollama ollama run <ollama-model>
-```
+This project uses a vision-capable (multimodal) model by default. You can explore all available options [here](https://ollama.com/search?c=vision) to find one that best fits your use case.
 
-Currently, the available models are:
-- `llava:7b`
-- `llava:13b`
-- `llava:34b` (default)
+By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLLAMA_MODEL` in your `.env` or shell. 
 
-
-If changed, update `.env` with model used.
+Make sure to pick a model size that your GPU/CPU and memory can comfortably support.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
