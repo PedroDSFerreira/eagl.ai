@@ -1,52 +1,40 @@
 <template>
-  <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-gray-900">Add New Contact</h1>
-      <p class="mt-2 text-gray-600">Create a new contact with AI-powered image analysis</p>
-    </div>
-    
-    <div class="card">
-      <ContactForm
-        :loading="loading"
-        @form-submit="handleSubmit"
-      />
+  <div class="container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold tracking-tight">Add New Contact</h1>
+        <p class="text-muted-foreground mt-2">Create a new contact with AI-powered image analysis</p>
+      </div>
+      
+      <Card class="p-6">
+        <ContactForm :loading="loading" @form-submit="handleSubmit" />
+      </Card>
     </div>
   </div>
 </template>
 
-<script>
-import { contactsApi } from '../services/api'
-import ContactForm from '../components/ContactForm.vue'
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { contactsApi } from '@/services/api'
+import ContactForm from '@/components/ContactForm.vue'
+import Card from '@/components/ui/card.vue'
 
-export default {
-  name: 'AddContact',
-  components: {
-    ContactForm
-  },
-  data() {
-    return {
-      loading: false
-    }
-  },
-  setup() {
-    const toast = useToast()
-    return { toast }
-  },
-  methods: {
-    async handleSubmit(formData) {
-      try {
-        this.loading = true
-        await contactsApi.createContact(formData)
-        this.toast.success('Contact created successfully!')
-        this.$router.push('/')
-      } catch (error) {
-        console.error('Error creating contact:', error)
-        this.toast.error(error.response?.data?.message || 'Failed to create contact')
-      } finally {
-        this.loading = false
-      }
-    }
+const loading = ref(false)
+const router = useRouter()
+const toast = useToast()
+
+const handleSubmit = async (formData: FormData) => {
+  try {
+    loading.value = true
+    await contactsApi.createContact(formData)
+    toast.success('Contact created successfully!')
+    router.push('/')
+  } catch (error: any) {
+    toast.error(error.response?.data?.message || 'Failed to create contact')
+  } finally {
+    loading.value = false
   }
 }
 </script>

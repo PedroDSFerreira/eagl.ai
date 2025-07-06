@@ -1,45 +1,55 @@
 <template>
-  <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center">
-          <router-link to="/" class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <EyeIcon class="w-5 h-5 text-white" />
+  <nav class="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <router-link to="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            <div class="h-30 w-30 rounded-lg flex items-center justify-center">
+              <img
+                :src="logoSrc"
+                alt="Logo"
+                class="h-32 w-32 transition-colors duration-300"
+              />
             </div>
-            <span class="text-xl font-bold text-gray-900">EaglAI</span>
           </router-link>
         </div>
         
         <div class="flex items-center space-x-4">
           <router-link
             to="/"
-            class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            :class="{ 'text-primary-600': $route.name === 'ContactList' }"
+            class="text-sm font-medium transition-colors hover:text-primary"
+            :class="{ 'text-primary': $route.name === 'ContactList', 'text-muted-foreground': $route.name !== 'ContactList' }"
           >
             Contacts
           </router-link>
-          <router-link
-            to="/add"
-            class="btn-primary text-sm"
-          >
-            <PlusIcon class="w-4 h-4 mr-1" />
-            Add Contact
-          </router-link>
+          <Button as-child>
+            <router-link to="/add" class="flex items-center space-x-2">
+              <Plus class="h-4 w-4" />
+              <span>Add Contact</span>
+            </router-link>
+          </Button>
+          <ThemeToggle />
         </div>
       </div>
     </div>
   </nav>
 </template>
 
-<script>
-import { EyeIcon, PlusIcon } from '@heroicons/vue/24/outline'
+<script setup lang="ts">
+import { Plus } from 'lucide-vue-next'
+import Button from '@/components/ui/button.vue'
+import ThemeToggle from '@/components/ui/theme-toggle.vue'
+import { ref, onMounted } from 'vue'
 
-export default {
-  name: 'NavBar',
-  components: {
-    EyeIcon,
-    PlusIcon
-  }
+const logoSrc = ref('/logo-black.svg')
+
+function updateLogo() {
+  logoSrc.value = document.documentElement.classList.contains('dark') ? '/logo-white.svg' : '/logo-black.svg'
 }
+
+onMounted(() => {
+  updateLogo()
+  const observer = new MutationObserver(updateLogo)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+})
 </script>

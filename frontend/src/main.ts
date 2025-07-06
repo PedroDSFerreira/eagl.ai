@@ -3,9 +3,19 @@ import App from './App.vue'
 import router from './router'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
-import './assets/css/tailwind.css'
+import '@/assets/index.css'
 
 const app = createApp(App)
+
+const theme = localStorage.getItem('theme')
+if (
+  theme === 'dark' ||
+  (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)
+) {
+  document.documentElement.classList.add('dark')
+} else {
+  document.documentElement.classList.remove('dark')
+}
 
 app.use(router)
 app.use(Toast, {
