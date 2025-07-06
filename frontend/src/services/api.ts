@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1'
+// Use runtime-injected API URL if available, else fallback to Vite env, else default
+const API_BASE_URL = (window.__VITE_API_URL__ as string | undefined) || import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
