@@ -4,10 +4,13 @@
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center space-x-2">
           <router-link to="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-            <div class="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-              <Eye class="h-5 w-5 text-primary-foreground" />
+            <div class="h-30 w-30 rounded-lg flex items-center justify-center">
+              <img
+                :src="logoSrc"
+                alt="Logo"
+                class="h-32 w-32 transition-colors duration-300"
+              />
             </div>
-            <span class="text-xl font-bold">EaglAI</span>
           </router-link>
         </div>
         
@@ -25,6 +28,7 @@
               <span>Add Contact</span>
             </router-link>
           </Button>
+          <ThemeToggle />
         </div>
       </div>
     </div>
@@ -32,6 +36,20 @@
 </template>
 
 <script setup lang="ts">
-import { Eye, Plus } from 'lucide-vue-next'
+import { Plus } from 'lucide-vue-next'
 import Button from '@/components/ui/button.vue'
+import ThemeToggle from '@/components/ui/theme-toggle.vue'
+import { ref, onMounted } from 'vue'
+
+const logoSrc = ref('/logo-black.svg')
+
+function updateLogo() {
+  logoSrc.value = document.documentElement.classList.contains('dark') ? '/logo-white.svg' : '/logo-black.svg'
+}
+
+onMounted(() => {
+  updateLogo()
+  const observer = new MutationObserver(updateLogo)
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
+})
 </script>
