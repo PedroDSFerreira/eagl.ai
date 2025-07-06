@@ -14,8 +14,8 @@
           </router-link>
         </div>
 
-        <!-- Desktop Nav Links -->
-        <div class="hidden md:flex items-center space-x-4">
+        <!-- Desktop Nav Links (unchanged style) -->
+        <div class="hidden sm:flex items-center space-x-4">
           <router-link
             to="/"
             class="text-sm font-medium transition-colors hover:text-primary"
@@ -32,8 +32,8 @@
           <ThemeToggle />
         </div>
 
-        <!-- Mobile Hamburger -->
-        <div class="md:hidden flex items-center">
+        <!-- Mobile Hamburger (shown below sm) -->
+        <div class="sm:hidden flex items-center">
           <Dialog>
             <DialogTrigger as-child>
               <Button variant="ghost" size="icon" aria-label="Open menu">
@@ -42,22 +42,28 @@
                 </svg>
               </Button>
             </DialogTrigger>
-            <DialogContent class="p-0 w-full max-w-xs">
-              <div class="flex flex-col gap-4 p-6">
-                <router-link
-                  to="/"
-                  class="text-lg font-medium transition-colors hover:text-primary"
-                  :class="{ 'text-primary': $route.name === 'ContactList', 'text-muted-foreground': $route.name !== 'ContactList' }"
-                >
-                  Contacts
-                </router-link>
-                <Button as-child class="w-full">
-                  <router-link to="/add" class="flex items-center space-x-2 justify-center">
-                    <Plus class="h-4 w-4" />
-                    <span>Add Contact</span>
+            <DialogContent class="p-0 w-full max-w-xs rounded-lg">
+              <div class="flex flex-col gap-2 p-6">
+                <DialogClose as-child>
+                  <router-link to="/" class="w-full">
+                    <Button variant="ghost" class="w-full flex items-center justify-start">
+                      <Home class="h-5 w-5 mr-2" />
+                      <span>Contacts</span>
+                    </Button>
                   </router-link>
+                </DialogClose>
+                <DialogClose as-child>
+                  <router-link to="/add" class="w-full">
+                    <Button variant="ghost" class="w-full flex items-center justify-start">
+                      <Plus class="h-5 w-5 mr-2" />
+                      <span>Add Contact</span>
+                    </Button>
+                  </router-link>
+                </DialogClose>
+                <Button variant="ghost" class="w-full flex items-center justify-start" @click="toggleTheme">
+                  <component :is="theme === 'light' ? Sun : Moon" class="h-5 w-5 mr-2" />
+                  <span>Theme</span>
                 </Button>
-                <ThemeToggle />
               </div>
             </DialogContent>
           </Dialog>
@@ -68,23 +74,45 @@
 </template>
 
 <script setup lang="ts">
-import { Plus } from 'lucide-vue-next'
+import { Plus, Home, Sun, Moon } from 'lucide-vue-next'
 import Button from '@/components/ui/button.vue'
 import ThemeToggle from '@/components/ui/theme-toggle.vue'
 import Dialog from '@/components/ui/dialog.vue'
 import DialogTrigger from '@/components/ui/dialog-trigger.vue'
 import DialogContent from '@/components/ui/dialog-content.vue'
+import { DialogClose } from 'radix-vue'
 import { ref, onMounted } from 'vue'
 
 const logoSrc = ref('/logo-black.svg')
+const theme = ref<'light' | 'dark'>('light')
 
 function updateLogo() {
   logoSrc.value = document.documentElement.classList.contains('dark') ? '/logo-white.svg' : '/logo-black.svg'
 }
 
+function updateTheme() {
+  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+}
+
+function toggleTheme() {
+  if (theme.value === 'dark') {
+    document.documentElement.classList.remove('dark')
+    theme.value = 'light'
+    localStorage.setItem('theme', 'light')
+  } else {
+    document.documentElement.classList.add('dark')
+    theme.value = 'dark'
+    localStorage.setItem('theme', 'dark')
+  }
+}
+
 onMounted(() => {
   updateLogo()
-  const observer = new MutationObserver(updateLogo)
+  updateTheme()
+  const observer = new MutationObserver(() => {
+    updateLogo()
+    updateTheme()
+  })
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] })
 })
 </script>
