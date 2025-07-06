@@ -87,7 +87,7 @@
       <Button type="button" variant="outline" @click="$router.go(-1)">
         Cancel
       </Button>
-      <Button type="submit" :disabled="loading">
+      <Button type="submit" :disabled="loading || !isFormValid">
         <Loader2 v-if="loading" class="h-4 w-4 mr-2 animate-spin" />
         {{ isEdit ? 'Update Contact' : 'Create Contact' }}
       </Button>
@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 import { ImageIcon, X, Loader2 } from 'lucide-vue-next'
 import type { Contact } from '@/services/api'
 import Button from '@/components/ui/button.vue'
@@ -128,6 +128,11 @@ const form = reactive({
 
 const imagePreview = ref<string | null>(null)
 const fileInput = ref<HTMLInputElement>()
+
+// Computed property to check if form is valid
+const isFormValid = computed(() => {
+  return form.name.trim() !== '' && form.phone.trim() !== ''
+})
 
 watch(() => props.initialData, (newData) => {
   if (newData) {
@@ -169,14 +174,33 @@ const removeImage = () => {
 }
 
 const handleSubmit = () => {
+  // Validate required fields before submission
+  if (!form.name.trim() || !form.phone.trim()) {
+    console.error('Name and phone are required')
+    return
+  }
+
   const formData = new FormData()
-  formData.append('name', form.name)
-  formData.append('phone', form.phone)
-  formData.append('email', form.email || '')
-  formData.append('address', form.address || '')
+  
+  // Ensure we're sending non-empty strings for required fields
+  formData.append('name', form.name.trim())
+  formData.append('phone', form.phone.trim())
+  
+  // For optional fields, send empty string if not provided
+  formData.append('email', form.email.trim())
+  formData.append('address', form.address.trim())
+  
+  // Add image if present
   if (form.image) {
     formData.append('image', form.image)
   }
+
+  // Debug: Log form data contents
+  console.log('Form data being sent:')
+  for (const [key, value] of formData.entries()) {
+    console.log(`${key}:`, value)
+  }
+  
   emit('form-submit', formData)
 }
 </script>
