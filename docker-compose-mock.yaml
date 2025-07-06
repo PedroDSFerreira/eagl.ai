@@ -1,0 +1,71 @@
+services:
+  eaglai:
+    build:
+      context: ./backend
+    container_name: eaglai
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_USER}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_PASS}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - EAGLAI_PORT=${EAGLAI_PORT}
+      - OLLAMA_URL=http://ollama-mock:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
+      - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN}
+    ports:
+      - ${EAGLAI_PORT}:${EAGLAI_PORT}
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: eaglai-frontend
+    depends_on:
+      - eaglai
+    environment:
+      - VITE_API_URL=http://localhost:${EAGLAI_PORT}/api/v1
+    ports:
+      - 3000:80
+
+  db:
+    image: postgres:16.2
+    container_name: db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  ollama-mock:
+    build:
+      context: ./mocks/ollama
+    container_name: ollama-mock
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_models:/root/.ollama
+    environment:
+      - OLLAMA_MODEL=${OLLAMA_MODEL}
+
+  db-cleaner:
+    image: alpine:3.20
+    container_name: db-cleaner
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./mocks/clean-db.sh:/clean-db.sh:ro
+    entrypoint: ["/bin/sh", "-c", "apk add --no-cache postgresql-client busybox-suid && while [ ! -f /clean-db.sh ]; do sleep 1; done && echo 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n*/1 * * * * /clean-db.sh' > /etc/crontabs/root && crond -f -d 8"]
+
+volumes:
+  ollama_models:
+  db_data:
