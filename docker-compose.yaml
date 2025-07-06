@@ -39,12 +39,14 @@ services:
       - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   ollama:
     image: ollama/ollama:0.9.5
     container_name: ollama
     volumes:
-      - ./data/ollama:/root/.ollama
+      - ollama_models:/root/.ollama
       - ./ollama/entrypoint.sh:/entrypoint.sh
     ports:
       - 11434:11434
@@ -52,3 +54,7 @@ services:
       - OLLAMA_MODEL=${OLLAMA_MODEL}
     tty: true
     entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+
+volumes:
+  ollama_models:
+  db_data:
