@@ -4,11 +4,11 @@
 
 >Search and identify contacts by physical traits, gathered from pictures with AI.
 
-## Requirements
+## Getting Started
+
+### Requirements
 - Docker/Docker Compose
 - `make` command
-
-## Getting Started
 
 #### 1. Create a local `.env` file
 
