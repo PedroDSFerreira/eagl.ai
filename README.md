@@ -1,4 +1,6 @@
-![eaglai-high-resolution-logo](https://github.com/PedroDSFerreira/eagl.ai/assets/97121697/b4f54272-73a3-4926-a9ab-0f1c0c01da60)
+![eaglai-high-resolution-logo-grayscale-transparent](https://github.com/user-attachments/assets/08681004-7f49-44a8-a04d-2c8b20ce88ce)
+
+<br>
 
 >Search and identify contacts by physical traits, gathered from pictures with AI.
 
