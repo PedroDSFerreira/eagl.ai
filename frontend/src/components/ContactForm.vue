@@ -19,6 +19,8 @@
           type="tel"
           required
           placeholder="Enter phone number"
+          pattern="[0-9]+"
+          inputmode="numeric"
         />
       </div>
       <div class="space-y-2">
@@ -45,7 +47,7 @@
       <div class="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
         <div v-if="imagePreview" class="space-y-4">
           <div class="relative inline-block">
-            <img :src="imagePreview" alt="Preview" class="h-32 w-32 object-cover rounded-lg mx-auto" />
+            <img :src="imagePreview" alt="Preview" class="h-32 w-32 object-cover rounded-lg mx-auto cursor-pointer" @click="triggerFileInput" />
             <Button
               type="button"
               variant="destructive"
@@ -56,9 +58,7 @@
               <X class="h-3 w-3" />
             </Button>
           </div>
-          <Button type="button" variant="outline" @click="triggerFileInput">
-            Change Photo
-          </Button>
+          <p class="text-xs text-muted-foreground mt-2">Click the image to change photo</p>
         </div>
         <div v-else class="space-y-4">
           <ImageIcon class="h-12 w-12 text-muted-foreground mx-auto" />
