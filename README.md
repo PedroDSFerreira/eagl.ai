@@ -40,7 +40,7 @@ make up
 
 ## Ollama models
 
-This project uses a vision-capable (multimodal) model by default. You can explore all available options [here](https://ollama.com/search?c=vision) to find one that best fits your use case.
+This project uses a vision-capable (multimodal) model. You can explore all available options [here](https://ollama.com/search?c=vision) to find one that best fits your use case.
 
 By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLLAMA_MODEL` in your `.env` or shell. 
 
