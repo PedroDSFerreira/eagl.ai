@@ -83,6 +83,16 @@
       </div>
     </div>
     
+    <!-- Debug section - remove this after testing -->
+    <div class="bg-gray-100 p-4 rounded text-xs">
+      <p><strong>Debug Info:</strong></p>
+      <p>Name: "{{ form.name }}"</p>
+      <p>Phone: "{{ form.phone }}"</p>
+      <p>Email: "{{ form.email }}"</p>
+      <p>Address: "{{ form.address }}"</p>
+      <p>Form Valid: {{ isFormValid }}</p>
+    </div>
+    
     <div class="flex justify-end space-x-3">
       <Button type="button" variant="outline" @click="$router.go(-1)">
         Cancel
@@ -118,7 +128,8 @@ const emit = defineEmits<{
   'form-submit': [formData: FormData]
 }>()
 
-const form = reactive({
+// Use ref instead of reactive for better debugging
+const form = ref({
   name: '',
   phone: '',
   email: '',
@@ -131,16 +142,16 @@ const fileInput = ref<HTMLInputElement>()
 
 // Computed property to check if form is valid
 const isFormValid = computed(() => {
-  return form.name.trim() !== '' && form.phone.trim() !== ''
+  return form.value.name.trim() !== '' && form.value.phone.trim() !== ''
 })
 
 watch(() => props.initialData, (newData) => {
   if (newData) {
-    form.name = newData.name || ''
-    form.phone = newData.phone || ''
-    form.email = newData.email || ''
-    form.address = newData.address || ''
-    form.image = null
+    form.value.name = newData.name || ''
+    form.value.phone = newData.phone || ''
+    form.value.email = newData.email || ''
+    form.value.address = newData.address || ''
+    form.value.image = null
     
     if (newData.imageData) {
       imagePreview.value = `data:image/jpeg;base64,${newData.imageData}`
@@ -156,7 +167,7 @@ const handleImageChange = (event: Event) => {
   const target = event.target as HTMLInputElement
   const file = target.files?.[0]
   if (file) {
-    form.image = file
+    form.value.image = file
     const reader = new FileReader()
     reader.onload = (e) => {
       imagePreview.value = e.target?.result as string
@@ -166,7 +177,7 @@ const handleImageChange = (event: Event) => {
 }
 
 const removeImage = () => {
-  form.image = null
+  form.value.image = null
   imagePreview.value = null
   if (fileInput.value) {
     fileInput.value.value = ''
@@ -175,7 +186,7 @@ const removeImage = () => {
 
 const handleSubmit = () => {
   // Validate required fields before submission
-  if (!form.name.trim() || !form.phone.trim()) {
+  if (!form.value.name.trim() || !form.value.phone.trim()) {
     console.error('Name and phone are required')
     return
   }
@@ -183,16 +194,16 @@ const handleSubmit = () => {
   const formData = new FormData()
   
   // Ensure we're sending non-empty strings for required fields
-  formData.append('name', form.name.trim())
-  formData.append('phone', form.phone.trim())
+  formData.append('name', form.value.name.trim())
+  formData.append('phone', form.value.phone.trim())
   
   // For optional fields, send empty string if not provided
-  formData.append('email', form.email.trim())
-  formData.append('address', form.address.trim())
+  formData.append('email', form.value.email.trim())
+  formData.append('address', form.value.address.trim())
   
   // Add image if present
-  if (form.image) {
-    formData.append('image', form.image)
+  if (form.value.image) {
+    formData.append('image', form.value.image)
   }
 
   // Debug: Log form data contents
@@ -204,3 +215,4 @@ const handleSubmit = () => {
   emit('form-submit', formData)
 }
 </script>
+</template>
