@@ -1,6 +1,6 @@
 <template>
   <AvatarImage
-    :class="cn('aspect-square h-full w-full', $attrs.class)"
+    :class="cn('aspect-square h-full w-full object-cover', $attrs.class)"
     v-bind="$attrs"
   />
 </template>

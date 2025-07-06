@@ -32,7 +32,6 @@ const handleSubmit = async (formData: FormData) => {
     toast.success('Contact created successfully!')
     router.push('/')
   } catch (error: any) {
-    console.error('Error creating contact:', error)
     toast.error(error.response?.data?.message || 'Failed to create contact')
   } finally {
     loading.value = false

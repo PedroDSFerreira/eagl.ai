@@ -11,7 +11,6 @@
           placeholder="Enter full name"
         />
       </div>
-      
       <div class="space-y-2">
         <Label for="phone">Phone *</Label>
         <Input
@@ -22,7 +21,6 @@
           placeholder="Enter phone number"
         />
       </div>
-      
       <div class="space-y-2">
         <Label for="email">Email</Label>
         <Input
@@ -32,7 +30,6 @@
           placeholder="Enter email address"
         />
       </div>
-      
       <div class="space-y-2">
         <Label for="address">Address</Label>
         <Input
@@ -43,7 +40,6 @@
         />
       </div>
     </div>
-    
     <div class="space-y-2">
       <Label>Photo</Label>
       <div class="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
@@ -82,22 +78,8 @@
         />
       </div>
     </div>
-    
-    <!-- Debug section - remove this after testing -->
-    <div class="bg-gray-100 p-4 rounded text-xs">
-      <p><strong>Debug Info:</strong></p>
-      <p>Name: "{{ form.name }}"</p>
-      <p>Phone: "{{ form.phone }}"</p>
-      <p>Email: "{{ form.email }}"</p>
-      <p>Address: "{{ form.address }}"</p>
-      <p>Form Valid: {{ isFormValid }}</p>
-    </div>
-    
     <div class="flex justify-end space-x-3">
-      <Button type="button" variant="outline" @click="$router.go(-1)">
-        Cancel
-      </Button>
-      <Button type="submit" :disabled="loading || !isFormValid">
+      <Button as="button" type="submit" :disabled="loading || !isFormValid">
         <Loader2 v-if="loading" class="h-4 w-4 mr-2 animate-spin" />
         {{ isEdit ? 'Update Contact' : 'Create Contact' }}
       </Button>
@@ -190,28 +172,18 @@ const handleSubmit = () => {
     console.error('Name and phone are required')
     return
   }
-
   const formData = new FormData()
-  
-  // Ensure we're sending non-empty strings for required fields
   formData.append('name', form.value.name.trim())
   formData.append('phone', form.value.phone.trim())
-  
-  // For optional fields, send empty string if not provided
-  formData.append('email', form.value.email.trim())
-  formData.append('address', form.value.address.trim())
-  
-  // Add image if present
+  if (form.value.email && form.value.email.trim() !== '') {
+    formData.append('email', form.value.email.trim())
+  }
+  if (form.value.address && form.value.address.trim() !== '') {
+    formData.append('address', form.value.address.trim())
+  }
   if (form.value.image) {
     formData.append('image', form.value.image)
   }
-
-  // Debug: Log form data contents
-  console.log('Form data being sent:')
-  for (const [key, value] of formData.entries()) {
-    console.log(`${key}:`, value)
-  }
-  
   emit('form-submit', formData)
 }
 </script>

@@ -75,7 +75,7 @@ interface Props {
   contact: Contact
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const router = useRouter()
 
