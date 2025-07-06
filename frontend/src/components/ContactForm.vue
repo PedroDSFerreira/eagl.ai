@@ -215,4 +215,3 @@ const handleSubmit = () => {
   emit('form-submit', formData)
 }
 </script>
-</template>
