@@ -46,5 +46,14 @@ By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLL
 
 Make sure to pick a model size that your GPU/CPU and memory can comfortably support.
 
+## Demo
+
+You can try the project online at: [https://eagle-ai.griffin-frog.ts.net/](https://eagle-ai.griffin-frog.ts.net/)
+
+- **Database refresh:** The database is automatically refreshed every hour. All data will be reset at that time.
+
+> ⚠️ **Warning:**
+> Do **not** enter any personal or sensitive information. All data is temporary and publicly accessible.
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
