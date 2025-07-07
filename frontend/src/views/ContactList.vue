@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-8">
     <div class="mb-8">
       <h1 class="text-3xl font-bold tracking-tight">Contacts</h1>
-      <p class="text-muted-foreground mt-2">Manage your AI-powered contact directory</p>
+      <p class="text-muted-foreground mt-2">Your saved contacts are listed below.</p>
     </div>
     
     <div v-if="loading" class="flex justify-center items-center py-12">

@@ -3,7 +3,7 @@
     <div class="max-w-2xl mx-auto">
       <div class="mb-8">
         <h1 class="text-3xl font-bold tracking-tight">Add New Contact</h1>
-        <p class="text-muted-foreground mt-2">Create a new contact with AI-powered image analysis</p>
+        <p class="text-muted-foreground mt-2">Fill in the details below to add a contact.</p>
       </div>
       
       <Card class="p-6">
