@@ -18,6 +18,7 @@ public class Description {
 
     @JsonView(Views.Minimal.class)
     private Age age;
+
     @JsonView(Views.Minimal.class)
     private Sex sex;
 
