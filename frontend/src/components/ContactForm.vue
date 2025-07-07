@@ -90,7 +90,6 @@
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from 'vue'
 import { ImageIcon, X, Loader2 } from 'lucide-vue-next'
-import type { Contact } from '@/services/api'
 import Button from '@/components/ui/button.vue'
 import Input from '@/components/ui/input.vue'
 import Label from '@/components/ui/label.vue'

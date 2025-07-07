@@ -32,15 +32,6 @@
                 </div>
               </div>
             </div>
-            
-            <Button
-              variant="ghost"
-              size="icon"
-              @click.stop="editContact"
-              class="opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <Pencil class="h-4 w-4" />
-            </Button>
           </div>
           
           <div v-if="contact.description" class="mt-4 flex flex-wrap gap-2">
@@ -61,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { User, Phone, Mail, Pencil } from 'lucide-vue-next'
+import { User, Phone, Mail } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import type { Contact } from '@/services/api'
 import Card from '@/components/ui/card.vue'
@@ -69,7 +60,6 @@ import Avatar from '@/components/ui/avatar.vue'
 import AvatarImage from '@/components/ui/avatar-image.vue'
 import AvatarFallback from '@/components/ui/avatar-fallback.vue'
 import Badge from '@/components/ui/badge.vue'
-import Button from '@/components/ui/button.vue'
 
 interface Props {
   contact: Contact
@@ -81,10 +71,6 @@ const router = useRouter()
 
 const viewContact = () => {
   router.push(`/contacts/${props.contact.id}`)
-}
-
-const editContact = () => {
-  router.push(`/edit/${props.contact.id}`)
 }
 
 const formatAge = (age: string) => {

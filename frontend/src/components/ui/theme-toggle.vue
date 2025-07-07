@@ -7,25 +7,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import Button from '@/components/ui/button.vue'
 import { Sun, Moon } from 'lucide-vue-next'
+import { useTheme } from '@/lib/useTheme'
 
-const theme = ref<'light' | 'dark'>('light')
-
-onMounted(() => {
-  theme.value = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
-})
-
-function toggleTheme() {
-  if (theme.value === 'dark') {
-    document.documentElement.classList.remove('dark')
-    theme.value = 'light'
-    localStorage.setItem('theme', 'light')
-  } else {
-    document.documentElement.classList.add('dark')
-    theme.value = 'dark'
-    localStorage.setItem('theme', 'dark')
-  }
-}
+const { theme, toggleTheme } = useTheme()
 </script>

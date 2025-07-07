@@ -20,16 +20,25 @@
           <p class="text-muted-foreground mt-1">Contact Details</p>
         </div>
         <div class="flex space-x-3">
-          <Button variant="outline" as-child>
-            <router-link :to="`/edit/${contact.id}`" class="flex items-center space-x-2">
-              <Pencil class="h-4 w-4" />
-              <span>Edit</span>
-            </router-link>
-          </Button>
-          <Button variant="destructive" @click="showDeleteDialog = true">
-            <Trash2 class="h-4 w-4 mr-2" />
-            Delete
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger as-child>
+              <Button variant="outline" size="icon" aria-label="Actions">
+                <MoreVertical class="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem as-child>
+                <router-link :to="`/edit/${contact.id}`" class="flex items-center space-x-2">
+                  <Pencil class="h-4 w-4" />
+                  <span>Edit</span>
+                </router-link>
+              </DropdownMenuItem>
+              <DropdownMenuItem @click="showDeleteDialog = true" data-destructive>
+                <Trash2 class="h-4 w-4 mr-2" />
+                <span>Delete</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       
@@ -55,19 +64,10 @@
         <div class="lg:col-span-2 space-y-6">
           <Card class="p-6">
             <h3 class="text-lg font-semibold mb-4">Contact Information</h3>
-            <div class="space-y-4">
-              <div class="flex items-center space-x-3">
-                <Phone class="h-5 w-5 text-muted-foreground" />
-                <span>{{ contact.phone }}</span>
-              </div>
-              <div v-if="contact.email" class="flex items-center space-x-3">
-                <Mail class="h-5 w-5 text-muted-foreground" />
-                <span>{{ contact.email }}</span>
-              </div>
-              <div v-if="contact.address" class="flex items-center space-x-3">
-                <MapPin class="h-5 w-5 text-muted-foreground" />
-                <span>{{ contact.address }}</span>
-              </div>
+            <div class="space-y-2">
+              <CopyField icon="Phone" :value="contact.phone" />
+              <CopyField v-if="contact.email" icon="Mail" :value="contact.email" />
+              <CopyField v-if="contact.address" icon="MapPin" :value="contact.address" />
             </div>
           </Card>
           
@@ -132,7 +132,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { User, Phone, Mail, MapPin, Pencil, Trash2, AlertTriangle, Loader2 } from 'lucide-vue-next'
+import { User, Phone, Mail, MapPin, Pencil, Trash2, AlertTriangle, Loader2, MoreVertical } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import { contactsApi, type Contact } from '@/services/api'
 import Card from '@/components/ui/card.vue'
@@ -147,6 +147,8 @@ import DialogHeader from '@/components/ui/dialog-header.vue'
 import DialogTitle from '@/components/ui/dialog-title.vue'
 import DialogDescription from '@/components/ui/dialog-description.vue'
 import DialogFooter from '@/components/ui/dialog-footer.vue'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
+import CopyField from '@/components/ui/copy-field.vue'
 
 interface Props {
   id: string
@@ -254,3 +256,14 @@ onMounted(() => {
   fetchContact()
 })
 </script>
+
+<style>
+[data-destructive] {
+  color: hsl(var(--destructive)) !important;
+  font-weight: 600;
+}
+[data-destructive][data-highlighted] {
+  background-color: hsl(var(--destructive)) !important;
+  color: hsl(var(--destructive-foreground)) !important;
+}
+</style>
