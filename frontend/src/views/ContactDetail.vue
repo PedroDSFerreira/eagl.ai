@@ -44,7 +44,7 @@
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1">
-          <Card class="p-6">
+          <Card class="p-6 shadow-none border-none">
             <div class="text-center space-y-4">
               <Avatar class="h-48 w-48 mx-auto">
                 <AvatarImage
