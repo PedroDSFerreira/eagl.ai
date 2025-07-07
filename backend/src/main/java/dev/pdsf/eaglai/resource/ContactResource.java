@@ -5,14 +5,10 @@ import dev.pdsf.eaglai.model.Contact;
 import dev.pdsf.eaglai.model.ContactListDTO;
 import dev.pdsf.eaglai.service.ContactService;
 import jakarta.validation.Valid;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -27,30 +23,7 @@ public class ContactResource {
     @JsonView(Views.Minimal.class)
     @GetMapping("/contacts")
     List<ContactListDTO> list() {
-        return contactService.listContacts().stream().map(contact -> {
-            String thumbnail = null;
-            if (contact.getImageData() != null && contact.getImageData().length > 0) {
-                try {
-                    ByteArrayInputStream in = new ByteArrayInputStream(contact.getImageData());
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    Thumbnails.of(in)
-                        .size(640, 640)
-                        .outputFormat("jpeg")
-                        .toOutputStream(out);
-                    thumbnail = Base64.getEncoder().encodeToString(out.toByteArray());
-                } catch (Exception e) {
-                    // fallback to original image if thumbnail generation fails
-                    thumbnail = Base64.getEncoder().encodeToString(contact.getImageData());
-                }
-            }
-            return new ContactListDTO(
-                contact.getId(),
-                contact.getName(),
-                contact.getPhone(),
-                contact.getEmail(),
-                thumbnail
-            );
-        }).toList();
+        return contactService.listContacts();
     }
 
     @JsonView(Views.General.class)

@@ -3,10 +3,16 @@ package dev.pdsf.eaglai.service;
 import dev.pdsf.eaglai.exception.ContactNotFoundException;
 import dev.pdsf.eaglai.model.Contact;
 import dev.pdsf.eaglai.model.Description;
+import dev.pdsf.eaglai.model.ContactListDTO;
 import dev.pdsf.eaglai.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
+
+import net.coobird.thumbnailator.Thumbnails;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 @Service
 public class ContactService {
@@ -20,8 +26,31 @@ public class ContactService {
         this.ollamaService = ollamaService;
     }
 
-    public List<Contact> listContacts() {
-        return repository.findAll();
+    public List<ContactListDTO> listContacts() {
+        return repository.findAll().stream().map(contact -> {
+            String thumbnail = null;
+            if (contact.getImageData() != null && contact.getImageData().length > 0) {
+                try {
+                    ByteArrayInputStream in = new ByteArrayInputStream(contact.getImageData());
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    Thumbnails.of(in)
+                        .size(640, 640)
+                        .outputFormat("jpeg")
+                        .toOutputStream(out);
+                    thumbnail = Base64.getEncoder().encodeToString(out.toByteArray());
+                } catch (Exception e) {
+                    // fallback to original image if thumbnail generation fails
+                    thumbnail = Base64.getEncoder().encodeToString(contact.getImageData());
+                }
+            }
+            return new ContactListDTO(
+                contact.getId(),
+                contact.getName(),
+                contact.getPhone(),
+                contact.getEmail(),
+                thumbnail
+            );
+        }).toList();
     }
 
     public Contact findContact(Long id) {
