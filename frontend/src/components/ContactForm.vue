@@ -263,7 +263,6 @@ const handleSubmit = () => {
     formData.append('email', form.value.email.trim())
   }
   if (form.value.birthday && form.value.birthday !== '') {
-    // Format birthday as yyyy-MM-dd for backend compatibility
     const date = form.value.birthday
     let formatted = ''
     if (typeof date === 'string') {
