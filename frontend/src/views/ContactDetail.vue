@@ -44,9 +44,9 @@
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-1">
-          <Card class="p-6">
+          <Card class="p-6 border-0 shadow-none bg-transparent">
             <div class="text-center space-y-4">
-              <Avatar class="h-48 w-48 mx-auto">
+              <Avatar class="h-48 w-48 mx-auto shadow-none ring-0 border-0">
                 <AvatarImage
                   v-if="contact.imageData"
                   :src="`data:image/jpeg;base64,${contact.imageData}`"
@@ -56,7 +56,7 @@
                   <User class="h-24 w-24" />
                 </AvatarFallback>
               </Avatar>
-              <h2 class="text-xl font-semibold">{{ contact.name }}</h2>
+              <h2 class="text-xl font-semibold">{{ contact.name }}<span v-if="contact.nickname" class="ml-2 text-base text-muted-foreground">({{ contact.nickname }})</span></h2>
             </div>
           </Card>
         </div>
@@ -68,6 +68,13 @@
               <CopyField icon="Phone" :value="contact.phone" />
               <CopyField v-if="contact.email" icon="Mail" :value="contact.email" />
               <CopyField v-if="contact.address" icon="MapPin" :value="contact.address" />
+              <CopyField v-if="contact.birthday" icon="Calendar" :value="contact.birthday" />
+              <div v-if="contact.notes">
+                <Label class="text-muted-foreground">Notes</Label>
+                <div class="rounded-lg border-2 border-accent bg-card p-4 mt-2 min-h-[80px] font-mono text-[0.95rem] text-foreground overflow-x-auto">
+                  <pre class="bg-transparent border-0 m-0 p-0 font-inherit text-inherit text-foreground whitespace-pre-line">{{ contact.notes }}</pre>
+                </div>
+              </div>
             </div>
           </Card>
           
@@ -266,4 +273,5 @@ onMounted(() => {
   background-color: hsl(var(--destructive)) !important;
   color: hsl(var(--destructive-foreground)) !important;
 }
+
 </style>
