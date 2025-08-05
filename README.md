@@ -42,13 +42,13 @@ make up
 
 This project uses a vision-capable (multimodal) model. You can explore all available options [here](https://ollama.com/search?c=vision) to find one that best fits your use case.
 
-By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLLAMA_MODEL` in your `.env` or shell. 
+By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLLAMA_MODEL` in your `.env` or shell.
 
 Make sure to pick a model size that your GPU/CPU and memory can comfortably support.
 
 ## Demo
 
-You can try the project online at: [https://eagle-ai.griffin-frog.ts.net/](https://eagle-ai.griffin-frog.ts.net/).
+You can try the project online at: [https://eaglai.griffin-frog.ts.net/](https://eaglai.griffin-frog.ts.net/).
 
 - **Database refresh:** The database is automatically refreshed every hour. All data will be reset at that time.
 - **Mock Ollama responses:** This demo uses the [mock configuration](docker-compose-mock.yaml), so the Ollama API responses are static and not representative of any actual parsed facial features.
