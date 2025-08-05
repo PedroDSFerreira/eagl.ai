@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dev.pdsf.eaglai.resource.Views;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -11,26 +12,37 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "contacts")
 public class Contact {
-    @JsonView(Views.Minimal.class)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+    @JsonView(Views.Minimal.class)
     private Long id;
 
-    @JsonView(Views.Minimal.class)
     @NotBlank(message = "Name is mandatory")
+    @JsonView(Views.Minimal.class)
     private String name;
 
-    @JsonView(Views.Minimal.class)
     @NotBlank(message = "Phone number is mandatory")
+    @JsonView(Views.Minimal.class)
     private String phone;
 
     @JsonView(Views.Minimal.class)
+    private String nickname;
+
+    @Past(message = "Birthday must be in the past")
+    @JsonView(Views.Minimal.class)
+    private LocalDate birthday;
+
+    @Column(columnDefinition = "TEXT")
+    @JsonView(Views.Minimal.class)
+    private String notes;
+    
     @Email
+    @JsonView(Views.Minimal.class)
     private String email;
 
     @JsonView(Views.General.class)
@@ -49,12 +61,14 @@ public class Contact {
     protected Contact() {
     }
 
-    public Contact(String name, String email, String phone, String address) {
+    public Contact(String name, String email, String phone, String nickname, LocalDate birthday, String notes, String address) {
         this.name = name;
         this.email = email;
         this.phone = phone;
+        this.nickname = nickname;
+        this.birthday = birthday;
+        this.notes = notes;
         this.address = address;
-
     }
 
     public Long getId() {
@@ -91,6 +105,30 @@ public class Contact {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public byte[] getImageData() {
@@ -130,9 +168,12 @@ public class Contact {
     public String toString() {
         return "Contact{" +
                 "name='" + name + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", birthday=" + birthday +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
+                ", notes='" + notes + '\'' +
                 ", description=" + description +
                 '}';
     }

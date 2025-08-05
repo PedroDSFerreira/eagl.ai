@@ -19,6 +19,9 @@ export interface Contact {
   imageData?: string
   thumbnail?: string
   description?: ContactDescription
+  birthday?: string
+  nickname?: string
+  notes?: string
 }
 
 export interface ContactDescription {

@@ -1,6 +1,87 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+/* VueDatePicker theme overrides for Tailwind integration */
+.dp__theme_light {
+  --dp-background-color: hsl(var(--background));
+  --dp-text-color: hsl(var(--foreground));
+  --dp-hover-color: hsl(var(--muted));
+  --dp-hover-text-color: hsl(var(--foreground));
+  --dp-hover-icon-color: hsl(var(--muted-foreground));
+  --dp-primary-color: hsl(var(--primary));
+  --dp-primary-disabled-color: hsl(var(--muted));
+  --dp-primary-text-color: hsl(var(--primary-foreground));
+  --dp-secondary-color: hsl(var(--secondary));
+  --dp-border-color: hsl(var(--input));
+  --dp-menu-border-color: hsl(var(--input));
+  --dp-border-color-hover: hsl(var(--ring));
+  --dp-border-color-focus: hsl(var(--ring));
+  --dp-disabled-color: hsl(var(--muted));
+  --dp-scroll-bar-background: hsl(var(--muted));
+  --dp-scroll-bar-color: hsl(var(--muted-foreground));
+  --dp-success-color: hsl(var(--primary));
+  --dp-success-color-disabled: hsl(var(--muted));
+  --dp-icon-color: hsl(var(--muted-foreground));
+  --dp-danger-color: hsl(var(--destructive));
+  --dp-marker-color: hsl(var(--destructive));
+  --dp-tooltip-color: hsl(var(--popover));
+  --dp-disabled-color-text: hsl(var(--muted-foreground));
+  --dp-highlight-color: hsl(var(--primary) / 0.1);
+  --dp-range-between-dates-background-color: hsl(var(--muted));
+  --dp-range-between-dates-text-color: hsl(var(--foreground));
+  --dp-range-between-border-color: hsl(var(--muted));
+}
+.dp__theme_dark {
+  --dp-background-color: hsl(var(--background));
+  --dp-text-color: hsl(var(--foreground));
+  --dp-hover-color: hsl(var(--muted));
+  --dp-hover-text-color: hsl(var(--foreground));
+  --dp-hover-icon-color: hsl(var(--muted-foreground));
+  --dp-primary-color: hsl(var(--primary));
+  --dp-primary-disabled-color: hsl(var(--muted));
+  --dp-primary-text-color: hsl(var(--primary-foreground));
+  --dp-secondary-color: hsl(var(--secondary));
+  --dp-border-color: hsl(var(--input));
+  --dp-menu-border-color: hsl(var(--input));
+  --dp-border-color-hover: hsl(var(--ring));
+  --dp-border-color-focus: hsl(var(--ring));
+  --dp-disabled-color: hsl(var(--muted));
+  --dp-scroll-bar-background: hsl(var(--muted));
+  --dp-scroll-bar-color: hsl(var(--muted-foreground));
+  --dp-success-color: hsl(var(--primary));
+  --dp-success-color-disabled: hsl(var(--muted));
+  --dp-icon-color: hsl(var(--muted-foreground));
+  --dp-danger-color: hsl(var(--destructive));
+  --dp-marker-color: hsl(var(--destructive));
+  --dp-tooltip-color: hsl(var(--popover));
+  --dp-disabled-color-text: hsl(var(--muted-foreground));
+  --dp-highlight-color: hsl(var(--primary) / 0.2);
+  --dp-range-between-dates-background-color: hsl(var(--muted));
+  --dp-range-between-dates-text-color: hsl(var(--foreground));
+  --dp-range-between-border-color: hsl(var(--muted));
+}
+/* Match VueDatePicker input and panel style to Tailwind input */
+:root {
+  --dp-background-color: hsl(var(--background));
+  --dp-text-color: hsl(var(--foreground));
+  --dp-border-color: hsl(var(--input));
+  --dp-border-radius: var(--radius, 0.5rem);
+  --dp-cell-border-radius: var(--radius, 0.5rem);
+  --dp-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --dp-border-color-focus: hsl(var(--ring));
+  --dp-border-color-hover: hsl(var(--ring));
+}
+.dark {
+  --dp-background-color: hsl(var(--background));
+  --dp-text-color: hsl(var(--foreground));
+  --dp-border-color: hsl(var(--input));
+  --dp-border-radius: var(--radius, 0.5rem);
+  --dp-cell-border-radius: var(--radius, 0.5rem);
+  --dp-box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --dp-border-color-focus: hsl(var(--ring));
+  --dp-border-color-hover: hsl(var(--ring));
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @layer base {
   :root {
