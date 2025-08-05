@@ -48,7 +48,9 @@ public class ContactService {
                 contact.getName(),
                 contact.getPhone(),
                 contact.getEmail(),
-                thumbnail
+                thumbnail,
+                contact.getNickname(),
+                contact.getBirthday()
             );
         }).toList();
     }
@@ -74,6 +76,9 @@ public class ContactService {
                     c.setEmail(newContact.getEmail());
                     c.setPhone(newContact.getPhone());
                     c.setAddress(newContact.getAddress());
+                    c.setNickname(newContact.getNickname());
+                    c.setBirthday(newContact.getBirthday());
+                    c.setNotes(newContact.getNotes());
                     return c;
                 })
                 .orElseThrow(() -> new ContactNotFoundException(id));
