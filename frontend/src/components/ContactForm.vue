@@ -263,7 +263,26 @@ const handleSubmit = () => {
     formData.append('email', form.value.email.trim())
   }
   if (form.value.birthday && form.value.birthday !== '') {
-    formData.append('birthday', form.value.birthday)
+    // Format birthday as yyyy-MM-dd for backend compatibility
+    const date = form.value.birthday
+    let formatted = ''
+    if (typeof date === 'string') {
+      // If already formatted, use as is if matches yyyy-MM-dd
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        formatted = date
+      } else {
+        // Try to parse string date
+        const d = new Date(date)
+        if (!isNaN(d.getTime())) {
+          formatted = d.toISOString().slice(0, 10)
+        }
+      }
+    } else if (date && typeof date === 'object' && typeof (date as Date).toISOString === 'function') {
+      formatted = (date as Date).toISOString().slice(0, 10)
+    }
+    if (formatted) {
+      formData.append('birthday', formatted)
+    }
   }
   if (form.value.address && form.value.address.trim() !== '') {
     formData.append('address', form.value.address.trim())
