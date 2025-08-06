@@ -24,13 +24,14 @@
             </button>
           </template>
           <!-- Add filter button below search bar and next to filters -->
-          <div class="relative" v-if="availableFilterTypes.length > 0">
+          <div v-if="availableFilterTypes.length > 0" class="relative">
             <button ref="addFilterBtn" @click="toggleFilterPopup" type="button" class="rounded-full border px-2 py-0.5 text-[11px] font-semibold transition-colors focus:ring-offset-2 border-transparent bg-primary/10 text-primary hover:bg-primary/20 flex items-center gap-1 cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none">
               <svg xmlns="http://www.w3.org/2000/svg" class="inline h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>Add filter
             </button>
+            <!-- Desktop popup -->
             <transition name="fade">
               <div
-                v-if="showFilterSelect"
+                v-if="showFilterSelect && !isMobile.value"
                 ref="filterPopup"
                 class="absolute left-0 z-30 mt-2 w-80 bg-background border border-border rounded-xl shadow-2xl p-5 flex flex-col gap-4 animate-fade-in"
                 style="top:100%"
@@ -56,6 +57,41 @@
                     <option value="" disabled selected hidden>Select value</option>
                     <option v-for="(label, val) in filterOptions[newFilterType]" :key="val" :value="val">{{ label }}</option>
                   </select>
+                </div>
+              </div>
+            </transition>
+            <!-- Mobile full-screen modal -->
+            <transition name="fade">
+              <div
+                v-if="showMobileFilterModal && isMobile"
+                class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center animate-fade-in"
+                @click="onMobileModalBgClick"
+              >
+                <div class="bg-background rounded-xl shadow-2xl w-full max-w-xs mx-auto p-6 flex flex-col gap-4 relative" @click.stop>
+                  <button @click="closeMobileFilterModal" class="absolute top-3 right-3 text-2xl px-2 py-1 rounded-full hover:bg-muted focus:outline-none">&times;</button>
+                  <h2 class="text-lg font-bold text-center mb-2">Add Filter</h2>
+                  <div class="flex flex-col gap-2">
+                    <label for="mobile-filter-type" class="text-xs font-semibold text-muted-foreground mb-1">Filter type</label>
+                    <select
+                      id="mobile-filter-type"
+                      v-model="newFilterType"
+                      class="border border-input rounded-lg px-3 py-2 bg-background text-foreground w-full focus:ring-2 focus:ring-primary focus:outline-none transition"
+                    >
+                      <option value="" disabled selected hidden>Select filter...</option>
+                      <option v-for="key in availableFilterTypes" :key="key" :value="key">{{ filterLabels[key] }}</option>
+                    </select>
+                  </div>
+                  <div class="flex flex-col gap-2" v-if="newFilterType && filterOptions[newFilterType]">
+                    <label for="mobile-filter-value" class="text-xs font-semibold text-muted-foreground mb-1">Value</label>
+                    <select
+                      id="mobile-filter-value"
+                      v-model="newFilterValue"
+                      class="border border-input rounded-lg px-3 py-2 bg-background text-foreground w-full focus:ring-2 focus:ring-primary focus:outline-none transition"
+                    >
+                      <option value="" disabled selected hidden>Select value</option>
+                      <option v-for="(label, val) in filterOptions[newFilterType]" :key="val" :value="val">{{ label }}</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </transition>
@@ -123,6 +159,13 @@
 </template>
 
 <script setup lang="ts">
+// Close mobile modal when clicking outside modal content
+function onMobileModalBgClick(e: MouseEvent) {
+  // Only close if the click is on the background (not on modal content)
+  if (e.target === e.currentTarget) {
+    closeMobileFilterModal()
+  }
+}
 import { computed } from 'vue'
 // Compute available filter types (not already selected)
 const availableFilterTypes = computed(() => {
@@ -139,6 +182,19 @@ const gridColsClass = computed(() => {
 })
 
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+// Mobile detection and modal state
+const isMobile = ref(false)
+const showMobileFilterModal = ref(false)
+
+function updateIsMobile() {
+  isMobile.value = window.matchMedia('(max-width: 640px)').matches
+}
+
+function closeMobileFilterModal() {
+  showMobileFilterModal.value = false
+  newFilterType.value = ''
+  newFilterValue.value = ''
+}
 import { Users, Plus, AlertTriangle, Loader2 } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import { contactsApi, type Contact } from '@/services/api'
@@ -151,7 +207,11 @@ const addFilterBtn = ref<HTMLElement | null>(null)
 const filterPopup = ref<HTMLElement | null>(null)
 
 function toggleFilterPopup() {
-  showFilterSelect.value = !showFilterSelect.value
+  if (isMobile.value) {
+    showMobileFilterModal.value = true
+  } else {
+    showFilterSelect.value = !showFilterSelect.value
+  }
 }
 
 function closeFilterPopup(e: MouseEvent) {
@@ -164,9 +224,12 @@ function closeFilterPopup(e: MouseEvent) {
 }
 
 onMounted(() => {
+  updateIsMobile()
+  window.addEventListener('resize', updateIsMobile)
   window.addEventListener('mousedown', closeFilterPopup)
 })
 onUnmounted(() => {
+  window.removeEventListener('resize', updateIsMobile)
   window.removeEventListener('mousedown', closeFilterPopup)
 })
 
@@ -280,6 +343,9 @@ watch([newFilterType, newFilterValue], ([type, value]) => {
     currentPage.value = 1
     fetchContacts()
     showFilterSelect.value = false
+    if (isMobile.value) {
+      showMobileFilterModal.value = false
+    }
   }
 })
 
