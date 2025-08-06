@@ -1,7 +1,13 @@
 <template>
-  <div :class="cn(badgeVariants({ variant }), $attrs.class)">
+  <component
+    :is="as"
+    :class="cn(badgeVariants({ variant }), $attrs.class, as === 'button' ? 'cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none' : '')"
+    v-bind="$attrs"
+    @click="$attrs.onClick"
+    type="button"
+  >
     <slot />
-  </div>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +33,10 @@ const badgeVariants = cva(
 
 interface Props {
   variant?: VariantProps<typeof badgeVariants>['variant']
+  as?: string
 }
 
-defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  as: 'div'
+})
 </script>
