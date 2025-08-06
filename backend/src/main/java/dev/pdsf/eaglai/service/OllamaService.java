@@ -4,10 +4,8 @@ import dev.pdsf.eaglai.exception.OllamaParseResponseException;
 import dev.pdsf.eaglai.model.Description;
 import dev.pdsf.eaglai.model.types.*;
 import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.content.Media;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.core.io.ByteArrayResource;
 
 @Service
