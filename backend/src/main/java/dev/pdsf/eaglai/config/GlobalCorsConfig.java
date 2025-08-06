@@ -1,4 +1,4 @@
-package dev.pdsf.eaglai;
+package dev.pdsf.eaglai.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

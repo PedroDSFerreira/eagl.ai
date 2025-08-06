@@ -35,9 +35,9 @@ export interface ContactDescription {
 }
 
 export const contactsApi = {
-  // Get all contacts
-  getContacts(): Promise<{ data: Contact[] }> {
-    return api.get('/contacts')
+  // Get all contacts (with optional params for filtering/pagination)
+  getContacts(params?: Record<string, any>): Promise<{ data: any }> {
+    return api.get('/contacts', { params })
   },
 
   // Get contact by ID
