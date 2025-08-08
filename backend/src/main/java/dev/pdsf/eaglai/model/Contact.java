@@ -40,7 +40,7 @@ public class Contact {
     @Column(columnDefinition = "TEXT")
     @JsonView(Views.Minimal.class)
     private String notes;
-    
+
     @Email
     @JsonView(Views.Minimal.class)
     private String email;
@@ -52,6 +52,10 @@ public class Contact {
     @JdbcTypeCode(SqlTypes.VARBINARY)
     @JsonView(Views.General.class)
     private byte[] imageData;
+
+    @Lob
+    @JdbcTypeCode(SqlTypes.VARBINARY)
+    private byte[] thumbnailData;
 
     @JsonView(Views.General.class)
     @OneToOne(cascade = CascadeType.ALL)
@@ -137,6 +141,14 @@ public class Contact {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public byte[] getThumbnailData() {
+        return thumbnailData;
+    }
+
+    public void setThumbnailData(byte[] thumbnailData) {
+        this.thumbnailData = thumbnailData;
     }
 
     public void setImage(MultipartFile image) throws IOException {

@@ -99,18 +99,18 @@
         </div>
       </div>
     </div>
-    
+
     <div v-if="loading" class="flex justify-center items-center py-12">
       <Loader2 class="h-8 w-8 animate-spin" />
     </div>
-    
+
     <div v-else-if="error" class="text-center py-12">
       <AlertTriangle class="h-12 w-12 text-destructive mx-auto mb-4" />
       <h3 class="text-lg font-semibold mb-2">Error loading contacts</h3>
       <p class="text-muted-foreground mb-4">{{ error }}</p>
       <Button @click="fetchContacts">Try Again</Button>
     </div>
-    
+
     <div v-else-if="contacts.length === 0" class="text-center py-12">
       <Users class="h-12 w-12 text-muted-foreground mx-auto mb-4" />
       <h3 class="text-lg font-semibold mb-2">No contacts</h3>
@@ -122,7 +122,7 @@
         </router-link>
       </Button>
     </div>
-    
+
     <div v-else>
       <div :class="gridColsClass + ' gap-6 justify-center'">
         <ContactCard
