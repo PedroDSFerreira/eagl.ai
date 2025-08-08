@@ -34,19 +34,8 @@ public class ContactService {
         return repository.findAll(spec, pageable)
                 .map(contact -> {
                     String thumbnail = null;
-                    if (contact.getImageData() != null && contact.getImageData().length > 0) {
-                        try {
-                            ByteArrayInputStream in = new ByteArrayInputStream(contact.getImageData());
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            Thumbnails.of(in)
-                                    .size(640, 640)
-                                    .outputFormat("jpeg")
-                                    .toOutputStream(out);
-                            thumbnail = Base64.getEncoder().encodeToString(out.toByteArray());
-                        } catch (Exception e) {
-                            // fallback to original image if thumbnail generation fails
-                            thumbnail = Base64.getEncoder().encodeToString(contact.getImageData());
-                        }
+                    if (contact.getThumbnailData() != null && contact.getThumbnailData().length > 0) {
+                        thumbnail = Base64.getEncoder().encodeToString(contact.getThumbnailData());
                     }
                     return new ContactListDTO(
                             contact.getId(),
@@ -67,6 +56,7 @@ public class ContactService {
     public Contact newContact(Contact newContact) {
         byte[] imageData = newContact.getImageData();
         if (imageData != null) {
+            generateThumbnail(newContact, imageData);
             Description description = parseImage(imageData);
             addContactDescription(newContact, description);
         }
@@ -90,6 +80,7 @@ public class ContactService {
         byte[] imageData = newContact.getImageData();
         if (imageData != null) {
             contact.setImageData(imageData);
+            generateThumbnail(contact, imageData);
             Description description = parseImage(imageData);
             addContactDescription(contact, description);
         }
@@ -104,6 +95,30 @@ public class ContactService {
     private Description parseImage(byte[] imageData) {
         String response = ollamaService.getResponse(imageData);
         return ollamaService.parseResponse(response);
+    }
+
+    private void generateThumbnail(Contact contact, byte[] imageData) {
+        try {
+            ByteArrayInputStream in = new ByteArrayInputStream(imageData);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            Thumbnails.of(in)
+                    .size(128, 128)
+                    .keepAspectRatio(true)
+                    .outputFormat("jpeg")
+                    .outputQuality(0.8)
+                    .toOutputStream(out);
+            byte[] thumbnailBytes = out.toByteArray();
+
+            // Log sizes for debugging
+            System.out.println("Original image size: " + imageData.length + " bytes");
+            System.out.println("Thumbnail size: " + thumbnailBytes.length + " bytes");
+
+            contact.setThumbnailData(thumbnailBytes);
+        } catch (Exception e) {
+            System.out.println("Thumbnail generation failed: " + e.getMessage());
+            // fallback to original image if thumbnail generation fails
+            contact.setThumbnailData(imageData);
+        }
     }
 
     private void addContactDescription(Contact contact, Description description) {
