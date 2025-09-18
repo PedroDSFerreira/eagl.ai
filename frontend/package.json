@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@vuepic/vue-datepicker": "^11.0.2",
-    "axios": "^1.11.0",
+    "axios": "^1.12.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-vue-next": "^0.294.0",
