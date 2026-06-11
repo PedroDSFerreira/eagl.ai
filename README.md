@@ -47,14 +47,15 @@ By default, the project uses `gemma3:12b-it-qat`. To change it, just update `OLL
 Make sure to pick a model size that your GPU/CPU and memory can comfortably support.
 
 ## Demo
+<img width="1865" height="944" alt="Screenshot from 2026-06-11 13-59-18" src="https://github.com/user-attachments/assets/9616b97c-9eb1-45c2-8d03-d1260b4f04db" />
 
-You can try the project online at: [https://eaglai.griffin-frog.ts.net/](https://eaglai.griffin-frog.ts.net/).
+You run the project demo with the following command:
+```
+docker compose -f docker-compose-mock.yaml up
+```
 
 - **Database refresh:** The database is automatically refreshed every hour. All data will be reset at that time.
 - **Mock Ollama responses:** This demo uses the [mock configuration](docker-compose-mock.yaml), so the Ollama API responses are static and not representative of any actual parsed facial features.
-
-> ⚠️ **Warning:**
-> Do **not** enter any personal or sensitive information. All data is temporary and publicly accessible.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
