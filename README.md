@@ -49,7 +49,7 @@ Make sure to pick a model size that your GPU/CPU and memory can comfortably supp
 ## Demo
 <img width="1865" height="944" alt="Screenshot from 2026-06-11 13-59-18" src="https://github.com/user-attachments/assets/9616b97c-9eb1-45c2-8d03-d1260b4f04db" />
 
-You run the project demo with the following command:
+You can run the project demo with the following command:
 ```
 docker compose -f docker-compose-mock.yaml up
 ```
